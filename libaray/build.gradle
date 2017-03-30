@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+apply from: "../dependency.gradle"
+
+ext {
+    PUBLISH_GROUP_ID = 'cn.yueying0083.superchat'
+    PUBLISH_ARTIFACT_ID = 'libaray'
+    PUBLISH_VERSION = versions.publishVersion
+}
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:' + versions.support
+    compile 'com.android.support:support-v13:' + versions.support
+}
