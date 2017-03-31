@@ -8,8 +8,13 @@ import android.view.View;
 
 public class LeftTextMessage extends TextChatModel {
 
-    public LeftTextMessage(String textMessage) {
-        super(textMessage);
+    public LeftTextMessage(String textMessage, long time) {
+        super(textMessage, time);
+    }
+
+    public LeftTextMessage(String textMessage, long time, String avatarUri) {
+        super(textMessage, time);
+        this.avatarUri = avatarUri;
     }
 
     @Override

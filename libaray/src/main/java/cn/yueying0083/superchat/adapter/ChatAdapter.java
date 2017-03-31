@@ -12,17 +12,34 @@ import java.util.List;
 
 import cn.yueying0083.libaray.R;
 import cn.yueying0083.superchat.model.BaseChatModel;
+import cn.yueying0083.superchat.utils.ImageLoader;
 
 /**
  * Created by luoj@huoli.com on 2017/3/30.
  */
 
-public class ChatMessageAdapter extends BaseAdapter {
+public class ChatAdapter extends BaseAdapter {
 
     private List<BaseChatModel> mChatList;
+    private int mTimelineInterval;
+    private ImageLoader mImageLoader;
 
-    public ChatMessageAdapter(List<BaseChatModel> chatList) {
+    public ChatAdapter(List<BaseChatModel> chatList) {
         this.mChatList = chatList;
+    }
+
+    public void updateTimelineInterval(int timelineInterval) {
+        if (mTimelineInterval != timelineInterval) {
+            mTimelineInterval = timelineInterval;
+            notifyDataSetChanged();
+        }
+    }
+
+    public void setImageLoader(ImageLoader imageLoader) {
+        mImageLoader = imageLoader;
+        if (mImageLoader != null) {
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -79,21 +96,39 @@ public class ChatMessageAdapter extends BaseAdapter {
                 avatar = vh.avatarLeft;
                 break;
             case RIGHT:
-                vh.right.setVisibility(View.GONE);
-                vh.left.setVisibility(View.VISIBLE);
+                vh.right.setVisibility(View.VISIBLE);
+                vh.left.setVisibility(View.GONE);
                 content = vh.contentRight;
                 avatar = vh.avatarRight;
                 break;
         }
 
-        content.setBackgroundResource(model.needBackground() ? R.drawable.bg_content : android.R.color.transparent);
+        content.setBackgroundResource(model.needBackground() ? R.drawable.bg_content_normal : android.R.color.transparent);
         content.addView(model.getChatContentView(parent.getContext()));
         if (model.enableAvatar()) {
             avatar.setVisibility(View.VISIBLE);
+            if(mImageLoader != null){
+                mImageLoader.loadImage(avatar, model.getAvatarUri());
+            }
         } else {
             avatar.setVisibility(View.GONE);
         }
         return v;
+    }
+
+    public void setChatList(List<BaseChatModel> list) {
+        this.mChatList = list;
+        notifyDataSetChanged();
+    }
+
+    public void add(BaseChatModel model) {
+        mChatList.add(model);
+        notifyDataSetChanged();
+    }
+
+    public void addAll(int position, List<BaseChatModel> list) {
+        mChatList.addAll(position, list);
+        notifyDataSetChanged();
     }
 
 

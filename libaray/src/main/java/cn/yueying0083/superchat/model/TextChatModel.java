@@ -2,6 +2,7 @@ package cn.yueying0083.superchat.model;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,8 +14,9 @@ public abstract class TextChatModel extends BaseChatModel {
 
     private String textMessage;
 
-    public TextChatModel(String textMessage) {
+    public TextChatModel(String textMessage, long time) {
         this.textMessage = textMessage;
+        this.chatDateTime = time;
     }
 
     @Override

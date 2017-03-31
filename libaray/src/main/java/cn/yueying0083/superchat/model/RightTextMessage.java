@@ -5,8 +5,13 @@ package cn.yueying0083.superchat.model;
  */
 
 public class RightTextMessage extends TextChatModel {
-    public RightTextMessage(String textMessage) {
-        super(textMessage);
+    public RightTextMessage(String textMessage, long time) {
+        super(textMessage, time);
+    }
+
+    public RightTextMessage(String textMessage, long time, String avatarUri) {
+        super(textMessage, time);
+        this.avatarUri = avatarUri;
     }
 
     @Override

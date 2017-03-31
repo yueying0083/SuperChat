@@ -4,11 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="cn.yueying0083.superchat.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
+    <cn.yueying0083.superchat.view.ChatListView
+        android:id="@+id/clv"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        app:clv_count_each_time="10"
+        app:clv_enable_load_prev="true"
+        app:clv_timeline_interval="1800" />
 </LinearLayout>
