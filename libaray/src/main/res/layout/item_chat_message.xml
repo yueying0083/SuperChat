@@ -22,7 +22,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_left_pic"
+            android:id="@+id/iv_left_avatar"
             android:layout_width="46dip"
             android:layout_height="46dip"
             android:layout_gravity="bottom"
@@ -63,7 +63,7 @@
             android:minHeight="140dip" />
 
         <ImageView
-            android:id="@+id/iv_right_pic"
+            android:id="@+id/iv_right_avatar"
             android:layout_width="46dip"
             android:layout_height="46dip"
             android:layout_gravity="bottom"
