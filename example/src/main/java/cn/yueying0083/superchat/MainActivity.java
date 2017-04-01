@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
         chatListView.setImageLoader(mImageDisplay);
         chatListView.setTimelineFormatter(new MyTimelineFormatter());
-        chatListView.setOnDataLoadListener(mOnDataLoadListener);
+        chatListView.setPrevMessageLoader(mPrevMessageLoader);
         chatListView.updateList(messageList);
     }
 
-    private ChatListView.OnDataLoadListener mOnDataLoadListener = new ChatListView.OnDataLoadListener() {
+    private ChatListView.PrevMessageLoader mPrevMessageLoader = new ChatListView.PrevMessageLoader() {
         @Override
-        public List<BaseMessage> getPrev() {
+        public List<BaseMessage> getPrevMessage() {
             if (!prevLoaded) {
                 try {
                     Thread.sleep(2000L);

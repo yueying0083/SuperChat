@@ -33,7 +33,7 @@ public class ChatListView extends ListView {
 
     private boolean mEnableLoadPrev;// enable load prev chat data
     private View mHeaderView;// head view show loading prev data progress
-    private OnDataLoadListener mOnDataLoadListener;// load prev data listener
+    private PrevMessageLoader mPrevMessageLoader;// load prev data listener
     private boolean mIsLoadingPrevData = false;
     private int mCountEachTime = -1;
 
@@ -74,7 +74,7 @@ public class ChatListView extends ListView {
     private OnScrollListener mOnScrollListener = new OnScrollListener() {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
-            if (mEnableLoadPrev && mOnDataLoadListener != null) {
+            if (mEnableLoadPrev && mPrevMessageLoader != null) {
                 switch (scrollState) {
                     case OnScrollListener.SCROLL_STATE_IDLE:
                         if (getFirstVisiblePosition() == 0) {
@@ -91,43 +91,46 @@ public class ChatListView extends ListView {
     };
 
     private synchronized void loadPrevData() {
-        new Thread() {
+        if (!mIsLoadingPrevData) {
+            mIsLoadingPrevData = true;
+            new Thread() {
 
-            public void run() {
-                mIsLoadingPrevData = true;
-                final List<BaseMessage> list = mOnDataLoadListener.getPrev();
+                public void run() {
+                    final List<BaseMessage> list = mPrevMessageLoader.getPrevMessage();
 
-                if (list == null || list.isEmpty() || (mCountEachTime > 0 && list.size() < mCountEachTime)) {
-                    mIsLoadingPrevData = false;
-                    setOnScrollListener(null);
+                    if (list == null || list.isEmpty() || (mCountEachTime > 0 && list.size() < mCountEachTime)) {
+                        mIsLoadingPrevData = false;
+                        setOnScrollListener(null);
+                        post(new Runnable() {
+                            @Override
+                            public void run() {
+                                removeHeaderView(mHeaderView);
+                            }
+                        });
+                        return;
+                    }
+
+                    Collections.sort(list, new Comparator<BaseMessage>() {
+                        @Override
+                        public int compare(BaseMessage m1, BaseMessage m2) {
+                            return Long.valueOf(m1.getChatDateTime() - m2.getChatDateTime()).intValue();
+                        }
+                    });
+
                     post(new Runnable() {
                         @Override
                         public void run() {
-                            removeHeaderView(mHeaderView);
+                            mChatAdapter.addAll(0, list);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                setSelectionFromTop(list.size() + 1, mHeaderView.getHeight());
+                            }
+                            mIsLoadingPrevData = false;
                         }
                     });
-                    return;
                 }
 
-                Collections.sort(list, new Comparator<BaseMessage>() {
-                    @Override
-                    public int compare(BaseMessage m1, BaseMessage m2) {
-                        return Long.valueOf(m1.getChatDateTime() - m2.getChatDateTime()).intValue();
-                    }
-                });
-
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mChatAdapter.addAll(0, list);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            setSelectionFromTop(list.size() + 1, mHeaderView.getHeight());
-                        }
-                    }
-                });
-            }
-
-        }.start();
+            }.start();
+        }
     }
 
     /**
@@ -181,18 +184,18 @@ public class ChatListView extends ListView {
         mChatAdapter.setTimelineFormatter(timelineFormatter);
     }
 
-    public void setOnDataLoadListener(OnDataLoadListener onDataLoadListener) {
-        mOnDataLoadListener = onDataLoadListener;
+    public void setPrevMessageLoader(PrevMessageLoader prevMessageLoader) {
+        mPrevMessageLoader = prevMessageLoader;
     }
 
     /**
      *
      */
-    public interface OnDataLoadListener {
+    public interface PrevMessageLoader {
         /**
          * We would like to load old data into chat list when scroll to top.
          */
-        public List<BaseMessage> getPrev();
+        public List<BaseMessage> getPrevMessage();
     }
 
 }
