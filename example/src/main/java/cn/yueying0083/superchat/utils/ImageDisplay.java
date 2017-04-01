@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by luoj@huoli.com on 2017/3/31.
+ * Created by yueying_0083@qq.com on 2017/3/31.
  */
 
 public class ImageDisplay implements ImageLoader {

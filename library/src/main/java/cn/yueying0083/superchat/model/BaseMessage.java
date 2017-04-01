@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
- * Created by luoj@huoli.com on 2017/3/30.
+ * Created by yueying_0083@qq.com on 2017/3/30.
  */
 
 public abstract class BaseMessage {

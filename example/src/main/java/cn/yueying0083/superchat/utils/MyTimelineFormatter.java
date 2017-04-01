@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import cn.yueying0083.superchat.adapter.ChatAdapter.TimelineFormatter;
 
 /**
- * Created by luoj@huoli.com on 2017/4/1.
+ * Created by yueying_0083@qq.com on 2017/4/1.
  */
 
 public class MyTimelineFormatter implements TimelineFormatter {

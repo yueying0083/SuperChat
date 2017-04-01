@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * Created by luoj@huoli.com on 2017/3/31.
+ * Created by yueying_0083@qq.com on 2017/3/31.
  */
 
 public abstract class TextMessage extends BaseMessage {

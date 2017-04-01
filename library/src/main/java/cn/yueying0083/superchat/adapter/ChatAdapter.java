@@ -17,7 +17,7 @@ import cn.yueying0083.superchat.model.BaseMessage;
 import cn.yueying0083.superchat.utils.ImageLoader;
 
 /**
- * Created by luoj@huoli.com on 2017/3/30.
+ * Created by yueying_0083@qq.com on 2017/3/30.
  */
 
 public class ChatAdapter extends BaseAdapter {

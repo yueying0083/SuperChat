@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import cn.yueying0083.superchat.utils.ImageLoader;
 
 /**
- * Created by luoj@huoli.com on 2017/3/31.
+ * Created by yueying_0083@qq.com on 2017/3/31.
  */
 
 public abstract class ImageMessage extends BaseMessage {
