@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.yueying0083.libaray.R;
 import cn.yueying0083.superchat.adapter.ChatAdapter;
-import cn.yueying0083.superchat.model.BaseChatModel;
+import cn.yueying0083.superchat.model.BaseMessage;
 import cn.yueying0083.superchat.utils.ImageLoader;
 
 /**
@@ -55,7 +55,6 @@ public class ChatListView extends ListView {
     private void initialize(AttributeSet attrs, int defStyleAttr) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ChatListView, defStyleAttr, 0);
 
-        int timelineInterval = a.getInteger(R.styleable.ChatListView_clv_timeline_interval, ONE_DAY_SEC);
         mEnableLoadPrev = a.getBoolean(R.styleable.ChatListView_clv_enable_load_prev, false);
         mCountEachTime = a.getInteger(R.styleable.ChatListView_clv_count_each_time, Integer.MAX_VALUE);
 
@@ -69,7 +68,6 @@ public class ChatListView extends ListView {
         setTranscriptMode(TRANSCRIPT_MODE_NORMAL);
 
         mChatAdapter = new ChatAdapter(null);
-        mChatAdapter.updateTimelineInterval(timelineInterval);
         setAdapter(mChatAdapter);
     }
 
@@ -97,18 +95,23 @@ public class ChatListView extends ListView {
 
             public void run() {
                 mIsLoadingPrevData = true;
-                final List<BaseChatModel> list = mOnDataLoadListener.getPrev();
+                final List<BaseMessage> list = mOnDataLoadListener.getPrev();
 
                 if (list == null || list.isEmpty() || (mCountEachTime > 0 && list.size() < mCountEachTime)) {
                     mIsLoadingPrevData = false;
                     setOnScrollListener(null);
-                    removeHeaderView(mHeaderView);
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            removeHeaderView(mHeaderView);
+                        }
+                    });
                     return;
                 }
 
-                Collections.sort(list, new Comparator<BaseChatModel>() {
+                Collections.sort(list, new Comparator<BaseMessage>() {
                     @Override
-                    public int compare(BaseChatModel m1, BaseChatModel m2) {
+                    public int compare(BaseMessage m1, BaseMessage m2) {
                         return Long.valueOf(m1.getChatDateTime() - m2.getChatDateTime()).intValue();
                     }
                 });
@@ -132,7 +135,7 @@ public class ChatListView extends ListView {
      *
      * @param list chat list
      */
-    public void updateList(List<BaseChatModel> list) {
+    public void updateList(List<BaseMessage> list) {
         if (list == null) {
             return;
         }
@@ -146,13 +149,14 @@ public class ChatListView extends ListView {
             }
         }
 
-        Collections.sort(list, new Comparator<BaseChatModel>() {
+        Collections.sort(list, new Comparator<BaseMessage>() {
             @Override
-            public int compare(BaseChatModel m1, BaseChatModel m2) {
+            public int compare(BaseMessage m1, BaseMessage m2) {
                 return Long.valueOf(m1.getChatDateTime() - m2.getChatDateTime()).intValue();
             }
         });
         mChatAdapter.setChatList(list);
+        setSelection(list.size() - 1);
     }
 
     /**
@@ -169,8 +173,12 @@ public class ChatListView extends ListView {
      *
      * @param chat chat add at bottom
      */
-    public void newChat(BaseChatModel chat) {
+    public void newChat(BaseMessage chat) {
 
+    }
+
+    public void setTimelineFormatter(ChatAdapter.TimelineFormatter timelineFormatter) {
+        mChatAdapter.setTimelineFormatter(timelineFormatter);
     }
 
     public void setOnDataLoadListener(OnDataLoadListener onDataLoadListener) {
@@ -184,7 +192,7 @@ public class ChatListView extends ListView {
         /**
          * We would like to load old data into chat list when scroll to top.
          */
-        public List<BaseChatModel> getPrev();
+        public List<BaseMessage> getPrev();
     }
 
 }

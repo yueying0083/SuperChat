@@ -15,6 +15,5 @@
         android:divider="@android:color/transparent"
         android:listSelector="@android:color/transparent"
         app:clv_count_each_time="10"
-        app:clv_enable_load_prev="true"
-        app:clv_timeline_interval="1800" />
+        app:clv_enable_load_prev="true" />
 </LinearLayout>

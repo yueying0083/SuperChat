@@ -8,7 +8,7 @@ import android.view.View;
  * Created by luoj@huoli.com on 2017/3/30.
  */
 
-public abstract class BaseChatModel {
+public abstract class BaseMessage {
 
     public enum ChatType {
         LEFT, RIGHT

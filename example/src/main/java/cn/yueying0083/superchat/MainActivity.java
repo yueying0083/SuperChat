@@ -3,21 +3,29 @@ package cn.yueying0083.superchat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.yueying0083.superchat.model.BaseChatModel;
-import cn.yueying0083.superchat.model.LeftTextMessage;
-import cn.yueying0083.superchat.model.RightTextMessage;
+import cn.yueying0083.superchat.model.BaseMessage;
+import cn.yueying0083.superchat.model.TextMessage.*;
+import cn.yueying0083.superchat.model.ImageMessage.*;
 import cn.yueying0083.superchat.utils.ImageDisplay;
+import cn.yueying0083.superchat.utils.MyTimelineFormatter;
 import cn.yueying0083.superchat.view.ChatListView;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.clv)
     ChatListView chatListView;
+
+    private ImageDisplay mImageDisplay;
+    private boolean prevLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,19 +34,63 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        Picasso.with(this).load("file:///android_asset/left.png").fetch();
+        Picasso.with(this).load("file:///android_asset/right.png").fetch();
+        Picasso.with(this).load("file:///android_asset/screen_shot_1.png").fetch();
+        Picasso.with(this).load("file:///android_asset/tree.JPG").fetch();
 
-        List<BaseChatModel> list = new ArrayList<>();
-        list.add(new LeftTextMessage("hello!", 1490150482788L, "assets://left.png"));
-        list.add(new RightTextMessage("hi, I'm jack", 1490250582788L, "assets://right.png"));
-        list.add(new LeftTextMessage("nice 2CU!", 1490250782788L, "assets://left.png"));
-        list.add(new RightTextMessage("^ v ^!", 1490350882788L, "assets://right.png"));
-        list.add(new RightTextMessage("I'd like to send you some large message, just like this: " +
+        mImageDisplay = new ImageDisplay();
+
+        List<BaseMessage> messageList = new ArrayList<>();
+        messageList.add(new LeftTextMessage("hello!", 1490150482788L, "file:///android_asset/left.png"));
+        messageList.add(new RightTextMessage("hi, I'm jack", 1490250582788L, "file:///android_asset/right.png"));
+        messageList.add(new LeftTextMessage("nice 2CU!", 1491025381246L, "file:///android_asset/left.png"));
+        messageList.add(new RightTextMessage("^ v ^!", 1491025383246L, "file:///android_asset/right.png"));
+        messageList.add(new RightTextMessage("I'd like to send you some large message, just like this: " +
                 "message along with the name of the " +
                 "caller and can view the list of" +
-                " unplayed and played messages.", 1490450882788L, "assets://right.png"));
-        list.add(new LeftTextMessage("I have received it, it's amazing!", 1490550782788L, "assets://left.png"));
-        list.add(new LeftTextMessage("I'd like to send some photo 2U!", 1490650782788L, "assets://left.png"));
-        chatListView.setImageLoader(new ImageDisplay());
-        chatListView.updateList(list);
+                " unplayed and played messages.", 1491025389246L, "file:///android_asset/right.png"));
+        messageList.add(new LeftTextMessage("I have received it, it's amazing!", 1491025389746L, "file:///android_asset/left.png"));
+        messageList.add(new LeftTextMessage("I'd like to send some photo 2U!", 1491025409746L, "file:///android_asset/left.png"));
+        messageList.add(new LeftImageMessage("file:///android_asset/screen_shot_1.png", 1491025411746L, mImageDisplay, "file:///android_asset/left.png"));
+        messageList.add(new RightTextMessage("^ v ^!", 1491025419746L, "file:///android_asset/right.png"));
+        messageList.add(new RightImageMessage("file:///android_asset/tree.JPG", 1491025541430L, mImageDisplay, "file:///android_asset/left.png"));
+
+        Logger.d(new Gson().toJson(messageList));
+
+        chatListView.setImageLoader(mImageDisplay);
+        chatListView.setTimelineFormatter(new MyTimelineFormatter());
+        chatListView.setOnDataLoadListener(mOnDataLoadListener);
+        chatListView.updateList(messageList);
     }
+
+    private ChatListView.OnDataLoadListener mOnDataLoadListener = new ChatListView.OnDataLoadListener() {
+        @Override
+        public List<BaseMessage> getPrev() {
+            if (!prevLoaded) {
+                try {
+                    Thread.sleep(2000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                prevLoaded = true;
+                List<BaseMessage> messageList = new ArrayList<>();
+                messageList.add(new LeftTextMessage("hello!", 1490110111181L, "file:///android_asset/left.png"));
+                messageList.add(new RightTextMessage("hi, I'm jack", 1490110111188L, "file:///android_asset/right.png"));
+                messageList.add(new LeftTextMessage("nice 2CU!", 1490110111788L, "file:///android_asset/left.png"));
+                messageList.add(new RightTextMessage("^ v ^!", 1490110112788L, "file:///android_asset/right.png"));
+                messageList.add(new RightTextMessage("I'd like to send you some large message, just like this: " +
+                        "message along with the name of the " +
+                        "caller and can view the list of" +
+                        " unplayed and played messages.", 1490110212788L, "file:///android_asset/right.png"));
+                messageList.add(new LeftTextMessage("I have received it, it's amazing!", 1490111212788L, "file:///android_asset/left.png"));
+                messageList.add(new LeftTextMessage("I'd like to send some photo 2U!", 1490150212788L, "file:///android_asset/left.png"));
+                messageList.add(new LeftImageMessage("file:///android_asset/screen_shot_1.png", 1490150412788L, mImageDisplay, "file:///android_asset/left.png"));
+                messageList.add(new RightTextMessage("^ v ^!", 1490150422788L, "file:///android_asset/right.png"));
+                messageList.add(new RightImageMessage("file:///android_asset/tree.JPG", 1490150432788L, mImageDisplay, "file:///android_asset/left.png"));
+                return messageList;
+            }
+            return null;
+        }
+    };
 }

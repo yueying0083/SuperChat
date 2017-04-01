@@ -1,5 +1,6 @@
 package cn.yueying0083.superchat.adapter;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import cn.yueying0083.libaray.R;
-import cn.yueying0083.superchat.model.BaseChatModel;
+import cn.yueying0083.superchat.model.BaseMessage;
 import cn.yueying0083.superchat.utils.ImageLoader;
 
 /**
@@ -20,24 +22,24 @@ import cn.yueying0083.superchat.utils.ImageLoader;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private List<BaseChatModel> mChatList;
-    private int mTimelineInterval;
+    private List<BaseMessage> mChatList;
     private ImageLoader mImageLoader;
+    private TimelineFormatter mTimelineFormatter;
 
-    public ChatAdapter(List<BaseChatModel> chatList) {
+    public ChatAdapter(List<BaseMessage> chatList) {
         this.mChatList = chatList;
-    }
-
-    public void updateTimelineInterval(int timelineInterval) {
-        if (mTimelineInterval != timelineInterval) {
-            mTimelineInterval = timelineInterval;
-            notifyDataSetChanged();
-        }
     }
 
     public void setImageLoader(ImageLoader imageLoader) {
         mImageLoader = imageLoader;
         if (mImageLoader != null) {
+            notifyDataSetChanged();
+        }
+    }
+
+    public void setTimelineFormatter(TimelineFormatter timelineFormatter) {
+        mTimelineFormatter = timelineFormatter;
+        if (mTimelineFormatter != null) {
             notifyDataSetChanged();
         }
     }
@@ -48,7 +50,7 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     @Override
-    public BaseChatModel getItem(int position) {
+    public BaseMessage getItem(int position) {
         return mChatList == null ? null : mChatList.get(position);
     }
 
@@ -85,7 +87,22 @@ public class ChatAdapter extends BaseAdapter {
         vh.contentLeft.removeAllViews();
         vh.contentRight.removeAllViews();
 
-        BaseChatModel model = getItem(position);
+        BaseMessage model = getItem(position);
+
+        long prevTime = position > 0 ? getItem(position - 1).getChatDateTime() : -1L;
+
+        if (mTimelineFormatter != null) {
+            String timeline = mTimelineFormatter.format(model.getChatDateTime(), prevTime);
+            if (!TextUtils.isEmpty(timeline)) {
+                vh.timeline.setText(timeline);
+                vh.timeline.setVisibility(View.VISIBLE);
+            } else {
+                vh.timeline.setVisibility(View.GONE);
+            }
+        } else {
+            vh.timeline.setVisibility(View.GONE);
+        }
+
         FrameLayout content = null;
         ImageView avatar = null;
         switch (model.getChatType()) {
@@ -107,7 +124,7 @@ public class ChatAdapter extends BaseAdapter {
         content.addView(model.getChatContentView(parent.getContext()));
         if (model.enableAvatar()) {
             avatar.setVisibility(View.VISIBLE);
-            if(mImageLoader != null){
+            if (mImageLoader != null) {
                 mImageLoader.loadImage(avatar, model.getAvatarUri());
             }
         } else {
@@ -116,21 +133,20 @@ public class ChatAdapter extends BaseAdapter {
         return v;
     }
 
-    public void setChatList(List<BaseChatModel> list) {
+    public void setChatList(List<BaseMessage> list) {
         this.mChatList = list;
         notifyDataSetChanged();
     }
 
-    public void add(BaseChatModel model) {
+    public void add(BaseMessage model) {
         mChatList.add(model);
         notifyDataSetChanged();
     }
 
-    public void addAll(int position, List<BaseChatModel> list) {
+    public void addAll(int position, List<BaseMessage> list) {
         mChatList.addAll(position, list);
         notifyDataSetChanged();
     }
-
 
     private static class ViewHolder {
         TextView timeline;
@@ -140,5 +156,15 @@ public class ChatAdapter extends BaseAdapter {
         View right;
         ImageView avatarRight;
         FrameLayout contentRight;
+    }
+
+    public interface TimelineFormatter {
+        /**
+         * @param current: current time mills
+         * @param prev:    prev time mills
+         * @return timeline: show timeline
+         * null: Do not show timeline
+         */
+        public String format(long current, long prev);
     }
 }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ChatListView">
-        <attr name="clv_timeline_interval" format="integer" />
+        <attr name="clv_timeline_interval_sec" format="integer" />
         <attr name="clv_enable_load_prev" format="boolean" />
         <attr name="clv_count_each_time" format="integer" />
+        <attr name="clv_footer_height" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="FitWidthImageView">
+        <attr name="fwiv_max_width" format="integer"/>
     </declare-styleable>
 </resources>
