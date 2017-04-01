@@ -1,10 +1,11 @@
 apply plugin: 'com.android.library'
 apply from: "../dependency.gradle"
+apply plugin: 'maven'
 
 ext {
     PUBLISH_GROUP_ID = 'cn.yueying0083.superchat'
     PUBLISH_ARTIFACT_ID = 'library'
-    PUBLISH_VERSION = versions.publishVersion
+    PUBLISH_VERSION = versions.versionName
 }
 
 android {
@@ -22,6 +23,57 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
+}
+
+group = project.PUBLISH_GROUP_ID
+version = project.PUBLISH_VERSION
+
+def localReleaseDest = "${buildDir}/release/${version}"
+
+println("Version: " + version);
+println("Build dir: " + buildDir);
+
+task androidJavadocs(type: Javadoc) {
+    failOnError = false
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+    classpath += files(ext.androidJar)
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file://${localReleaseDest}")
+    }
+}
+
+task zipRelease(type: Zip) {
+    from localReleaseDest
+    destinationDir buildDir
+    archiveName "release-${version}.zip"
+}
+
+task generateRelease << {
+    println "Release ${version} can be found at ${localReleaseDest}/"
+    println "Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+}
+
+generateRelease.dependsOn(uploadArchives)
+generateRelease.dependsOn(zipRelease)
+
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
 }
 
 dependencies {
