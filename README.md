@@ -1,6 +1,6 @@
 # SuperChat
 
-SuperChat is a libarary for you to create chat activity / message activity / feedback activity easily.
+SuperChat is a libarary for you to create chat activity, message activity, feedback activity easily.
 
 <img src="pic/screen_shot.gif"/>
 
