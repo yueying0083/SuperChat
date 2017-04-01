@@ -1,12 +1,14 @@
-# SuperChat
+SuperChat
+===========
 
-SuperChat is a library for you to create chat activity, message activity, feedback activity easily.
+SuperChat is a library to easily create chat, message, feedback activity.
 
 <img src="pic/screen_shot.gif"/>
 
-### Usage
+Usage
+-----
 
-Layout:
+###### Layout:
 ```
     <cn.yueying0083.superchat.view.ChatListView
         android:id="@+id/clv"
@@ -17,7 +19,7 @@ Layout:
         android:listSelector="@android:color/transparent" />
 ```
 
-Activity:
+###### Activity:
 ```
     List<BaseMessage> messageList = new ArrayList<>();
     ...
@@ -26,7 +28,7 @@ Activity:
     chatListView.updateList(messageList);
 ```
 
-Model:
+###### Model:
 ```
     public abstract class BaseMessage {
 
@@ -54,7 +56,16 @@ Model:
     }
 ```
 
-### Timeline
+Avatar
+------
+You must provide an ImageLoader to ChatView, otherwise it will show default avatar or no avatar for null.<br/>
+You may use other 3rd party tools like [Picanoo](http://square.github.io/picasso/)
+```
+chatListView.setImageLoader(mImageDisplay);
+```
+
+Timeline
+--------
 
 Time line consider to be message's label, TimelineFormatter give you an implementation whether the timeline should be shown, how to show it.
 ```
@@ -66,7 +77,8 @@ Time line consider to be message's label, TimelineFormatter give you an implemen
     });
 ```
 
-### Prev Load
+Prev Load
+---------
 ```
     <cn.yueying0083.superchat.view.ChatListView
         ...
@@ -83,10 +95,34 @@ Time line consider to be message's label, TimelineFormatter give you an implemen
           });
 ```
 
-# Component
+Component
+=========
 For now, SuperChat is providing 2 components to you. Each component has two subclass, left and right.
 
-### TextMessage
+TextMessage
+-----------
+TextMessage is simple, do not need anything to provide.
 
-### ImageMessage
+```
+    TextMessage tm = new LeftTextMessage("hello!", time);
+```
 
+ImageMessage
+------------
+ImageMessage need you to provide a ImageLoader to load image.<br/>
+Same thing to do as avatar.
+```
+    ImageMessage im = new LeftImageMessage("file:///android_asset/screen_shot_1.png", time, new ImageLoader(){
+
+        @Override
+        public void loadImage(ImageView iv, String uri) {
+            // load your image into imageview;
+            //
+        }
+    }, "file:///android_asset/left.png");
+```
+
+# To be continue
+- More Components: LinkMessage, FeedbackMessage, MusicMessage...
+- Input area.
+- Clickable.
