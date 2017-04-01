@@ -1,6 +1,6 @@
 # SuperChat
 
-SuperChat is a libarary for you to create chat activity, message activity, feedback activity easily.
+SuperChat is a library for you to create chat activity, message activity, feedback activity easily.
 
 <img src="pic/screen_shot.gif"/>
 
@@ -70,7 +70,8 @@ Time line consider to be message's label, TimelineFormatter give you an implemen
 ```
     <cn.yueying0083.superchat.view.ChatListView
         ...
-        app:clv_count_each_time="10"       <!-- prev load every time, less than this will be consider there is no more message -->
+        app:clv_count_each_time="10"        <!-- count of message prev load every time -->
+                                            <!-- less than this will be consider there is no more message -->
         app:clv_enable_load_prev="true"    <!-- if prev load enable -->
         .../>
 ```
