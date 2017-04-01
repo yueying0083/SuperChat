@@ -3,7 +3,7 @@ apply from: "../dependency.gradle"
 
 ext {
     PUBLISH_GROUP_ID = 'cn.yueying0083.superchat'
-    PUBLISH_ARTIFACT_ID = 'libaray'
+    PUBLISH_ARTIFACT_ID = 'library'
     PUBLISH_VERSION = versions.publishVersion
 }
 
