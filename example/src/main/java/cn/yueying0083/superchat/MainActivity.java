@@ -13,6 +13,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yueying0083.superchat.model.BaseMessage;
+import cn.yueying0083.superchat.model.LinkMessage;
 import cn.yueying0083.superchat.model.TextMessage.*;
 import cn.yueying0083.superchat.model.ImageMessage.*;
 import cn.yueying0083.superchat.utils.ImageDisplay;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         mImageDisplay = new ImageDisplay();
 
         List<BaseMessage> messageList = new ArrayList<>();
-        messageList.add(new LeftTextMessage("hello!", 1490150482788L, "file:///android_asset/left.png"));
         messageList.add(new RightTextMessage("hi, I'm jack", 1490250582788L, "file:///android_asset/right.png"));
         messageList.add(new LeftTextMessage("nice 2CU!", 1491025381246L, "file:///android_asset/left.png"));
         messageList.add(new RightTextMessage("^ v ^!", 1491025383246L, "file:///android_asset/right.png"));
@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         messageList.add(new LeftImageMessage("file:///android_asset/screen_shot_1.png", 1491025411746L, mImageDisplay, "file:///android_asset/left.png"));
         messageList.add(new RightTextMessage("^ v ^!", 1491025419746L, "file:///android_asset/right.png"));
         messageList.add(new RightImageMessage("file:///android_asset/tree.JPG", 1491025541430L, mImageDisplay, "file:///android_asset/left.png"));
+        messageList.add(new LinkMessage.LeftLinkMessage("There's 4 options you can choose, each one will go to one unique link you want to go!", 1491025641430L
+                , "file:///android_asset/left.png", new LinkMessage.Link("Unique Option 1"), new LinkMessage.Link("Unique Option 2")
+                , new LinkMessage.Link("Unique Option 3"), new LinkMessage.Link("Unique Option 4")));
 
         Logger.d(new Gson().toJson(messageList));
 
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 prevLoaded = true;
                 List<BaseMessage> messageList = new ArrayList<>();
-                messageList.add(new LeftTextMessage("hello!", 1490110111181L, "file:///android_asset/left.png"));
+                messageList.add(new LinkMessage.LeftLinkMessage("hello!", 1490110111181L, "file:///android_asset/left.png", new LinkMessage.Link("点我呀!")));
                 messageList.add(new RightTextMessage("hi, I'm jack", 1490110111188L, "file:///android_asset/right.png"));
                 messageList.add(new LeftTextMessage("nice 2CU!", 1490110111788L, "file:///android_asset/left.png"));
                 messageList.add(new RightTextMessage("^ v ^!", 1490110112788L, "file:///android_asset/right.png"));
