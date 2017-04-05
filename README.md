@@ -4,6 +4,9 @@ SuperChat
 SuperChat is a library to easily create chat, message, feedback activity.
 
 <img src="pic/screen_shot.gif"/>
+&nbsp;
+<img src="pic/screen_shot.png"/>
+
 
 Usage
 -----
@@ -96,7 +99,7 @@ Prev Load
 
 Component
 =========
-For now, SuperChat is providing 2 components to you. Each component has two subclass, left and right.
+For now, SuperChat is providing 3 components to you. Each component has two subclass, left and right.
 
 TextMessage
 -----------
@@ -121,7 +124,16 @@ Same thing to do as avatar.
     }, "file:///android_asset/left.png");
 ```
 
+LinkMessage
+-----------
+LinkMessage allow you to create rich TextMessage, add links to options
+```java
+    messageList.add(new LinkMessage.LeftLinkMessage("There's 4 options you can choose, each one will go to one unique link you want to go!", 1491025641430L
+                    , "file:///android_asset/left.png", new LinkMessage.Link("Unique Option 1"), new LinkMessage.Link("Unique Option 2")
+                    , new LinkMessage.Link("Unique Option 3"), new LinkMessage.Link("Unique Option 4")));
+```
+
 # To be continue
-- More Components: LinkMessage, FeedbackMessage, MusicMessage...
+- More Components: ~~LinkMessage~~, FeedbackMessage, MusicMessage...
 - Input area.
 - Clickable.
