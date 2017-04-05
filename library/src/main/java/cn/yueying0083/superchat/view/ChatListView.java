@@ -120,9 +120,15 @@ public class ChatListView extends ListView {
                     post(new Runnable() {
                         @Override
                         public void run() {
+                            boolean avoidJump = true;
+                            if (getFirstVisiblePosition() == 0) {
+                                avoidJump = false;
+                            }
                             mChatAdapter.addAll(0, list);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                setSelectionFromTop(list.size() + 1, mHeaderView.getHeight());
+                            if (!avoidJump) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    setSelectionFromTop(list.size() + 1, mHeaderView.getHeight());
+                                }
                             }
                             mIsLoadingPrevData = false;
                         }
