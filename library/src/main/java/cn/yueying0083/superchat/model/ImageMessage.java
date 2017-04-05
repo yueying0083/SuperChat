@@ -18,16 +18,15 @@ public abstract class ImageMessage extends BaseMessage {
     private ImageLoader mImageLoader;
 
     public ImageMessage(String imageUri, long time, ImageLoader imageLoader) {
+        super(time);
         this.mImageUri = imageUri;
-        this.chatDateTime = time;
         this.mImageLoader = imageLoader;
     }
 
     public ImageMessage(String imageUri, long time, ImageLoader imageLoader, String avatarUri) {
+        super(time, avatarUri);
         this.mImageUri = imageUri;
-        this.chatDateTime = time;
         this.mImageLoader = imageLoader;
-        this.avatarUri = avatarUri;
     }
 
     @Override

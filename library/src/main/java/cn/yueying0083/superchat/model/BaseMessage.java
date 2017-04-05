@@ -18,6 +18,15 @@ public abstract class BaseMessage {
     long chatDateTime;
     String avatarUri;
 
+    BaseMessage(long chatDateTime) {
+        this.chatDateTime = chatDateTime;
+    }
+
+    BaseMessage(long chatDateTime, String avatarUri) {
+        this.chatDateTime = chatDateTime;
+        this.avatarUri = avatarUri;
+    }
+
     /**
      * Type of chat, left or right
      *

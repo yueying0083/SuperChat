@@ -14,8 +14,13 @@ public abstract class TextMessage extends BaseMessage {
     private String textMessage;
 
     public TextMessage(String textMessage, long time) {
+        super(time);
         this.textMessage = textMessage;
-        this.chatDateTime = time;
+    }
+
+    public TextMessage(String textMessage, long time, String avatar) {
+        super(time, avatar);
+        this.textMessage = textMessage;
     }
 
     @Override
@@ -32,8 +37,7 @@ public abstract class TextMessage extends BaseMessage {
         }
 
         public LeftTextMessage(String textMessage, long time, String avatarUri) {
-            super(textMessage, time);
-            this.avatarUri = avatarUri;
+            super(textMessage, time, avatarUri);
         }
 
         @Override
@@ -49,8 +53,7 @@ public abstract class TextMessage extends BaseMessage {
         }
 
         public RightTextMessage(String textMessage, long time, String avatarUri) {
-            super(textMessage, time);
-            this.avatarUri = avatarUri;
+            super(textMessage, time, avatarUri);
         }
 
         @Override
@@ -60,7 +63,6 @@ public abstract class TextMessage extends BaseMessage {
 
 
     }
-
 
 
 }
