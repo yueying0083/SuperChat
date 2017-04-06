@@ -20,7 +20,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    compile 'com.github.yueying0083:SuperChat:0.0.1'
+    compile 'com.github.yueying0083:SuperChat:0.0.2'
 }
 ```
 
