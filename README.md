@@ -5,6 +5,25 @@ SuperChat is a library to easily create chat, message, feedback activity.
 
 <img src="pic/screen_shot.png"/>&nbsp;<img src="pic/screen_shot.gif"/>
 
+Dependency
+----------
+
+###### Gradle dependency:
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
+
+```gradle
+dependencies {
+    compile 'com.github.yueying0083:SuperChat:0.0.1'
+}
+```
+
 Usage
 -----
 
