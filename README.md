@@ -3,10 +3,7 @@ SuperChat
 
 SuperChat is a library to easily create chat, message, feedback activity.
 
-<img src="pic/screen_shot.gif"/>
-&nbsp;
-<img src="pic/screen_shot.png"/>
-
+<img src="pic/screen_shot.png"/>&nbsp;<img src="pic/screen_shot.gif"/>
 
 Usage
 -----
