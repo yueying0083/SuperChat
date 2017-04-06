@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.Collections;
@@ -30,6 +31,7 @@ public class ChatListView extends ListView {
     private static final int ONE_DAY_SEC = Long.valueOf(TimeUnit.DAYS.toSeconds(1)).intValue();
 
     private ChatAdapter mChatAdapter;
+    private OnMessageClickListener mOnMessageClickListener;
 
     private boolean mEnableLoadPrev;// enable load prev chat data
     private View mHeaderView;// head view show loading prev data progress
@@ -68,6 +70,7 @@ public class ChatListView extends ListView {
         setTranscriptMode(TRANSCRIPT_MODE_NORMAL);
 
         mChatAdapter = new ChatAdapter(null);
+        mChatAdapter.setOnMessageClickListener(mOnMessageClickListener);
         setAdapter(mChatAdapter);
     }
 
@@ -180,10 +183,11 @@ public class ChatListView extends ListView {
     /**
      * Add message
      *
-     * @param chat chat add at bottom
+     * @param message message add at bottom
      */
-    public void newChat(BaseMessage chat) {
-
+    public void newMessage(BaseMessage message) {
+        mChatAdapter.add(message);
+        setSelection(mChatAdapter.getCount() - 1);
     }
 
     public void setTimelineFormatter(ChatAdapter.TimelineFormatter timelineFormatter) {
@@ -194,6 +198,11 @@ public class ChatListView extends ListView {
         mPrevMessageLoader = prevMessageLoader;
     }
 
+    public void setOnMessageClickListener(OnMessageClickListener onMessageClickListener) {
+        mOnMessageClickListener = onMessageClickListener;
+        mChatAdapter.setOnMessageClickListener(mOnMessageClickListener);
+    }
+
     /**
      *
      */
@@ -202,6 +211,17 @@ public class ChatListView extends ListView {
          * We would like to load old data into chat list when scroll to top.
          */
         public List<BaseMessage> getPrevMessage();
+    }
+
+    public interface OnMessageClickListener {
+        public void onClick(int id);
+    }
+
+    /**
+     * Message Content
+     */
+    public interface OnMessageContentClickListener {
+
     }
 
 }

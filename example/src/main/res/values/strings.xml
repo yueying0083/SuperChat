@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SuperChat</string>
+    <string name="image_desc_send">image_desc_send</string>
 </resources>

@@ -80,6 +80,21 @@ Time line consider to be message's label, TimelineFormatter give you an implemen
     });
 ```
 
+Click Event
+-----------
+```java
+    chatListView.setOnMessageClickListener(new ChatListView.OnMessageClickListener() {
+        @Override
+        public void onClick(int id) {
+            switch (id){
+                case xxx:
+                    ....
+                    break;
+            }
+        }
+    });
+```
+
 Prev Load
 ---------
 ```xml
@@ -135,5 +150,6 @@ LinkMessage allow you to create rich TextMessage, add links to options
 
 # To be continue
 - More Components: ~~LinkMessage~~, FeedbackMessage, MusicMessage...
-- Input area.
-- Clickable.
+- ~~Input area~~.
+- ~~Clickable~~.
+- Message loadable: send message progress.

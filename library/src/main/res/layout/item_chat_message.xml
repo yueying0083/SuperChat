@@ -43,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_content_selector"
-                android:clickable="true"
                 android:minHeight="46dip" />
         </LinearLayout>
 
@@ -78,7 +77,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_content_selector"
-                android:clickable="true"
                 android:minHeight="46dip" />
         </LinearLayout>
 

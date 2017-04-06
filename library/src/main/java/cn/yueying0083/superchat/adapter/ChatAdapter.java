@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import cn.yueying0083.libaray.R;
 import cn.yueying0083.superchat.model.BaseMessage;
 import cn.yueying0083.superchat.utils.ImageLoader;
+import cn.yueying0083.superchat.view.ChatListView;
 
 /**
  * Created by yueying_0083@qq.com on 2017/3/30.
@@ -25,6 +26,7 @@ public class ChatAdapter extends BaseAdapter {
     private List<BaseMessage> mChatList;
     private ImageLoader mImageLoader;
     private TimelineFormatter mTimelineFormatter;
+    private ChatListView.OnMessageClickListener mOnMessageClickListener;
 
     public ChatAdapter(List<BaseMessage> chatList) {
         this.mChatList = chatList;
@@ -42,6 +44,10 @@ public class ChatAdapter extends BaseAdapter {
         if (mTimelineFormatter != null) {
             notifyDataSetChanged();
         }
+    }
+
+    public void setOnMessageClickListener(ChatListView.OnMessageClickListener onMessageClickListener) {
+        mOnMessageClickListener = onMessageClickListener;
     }
 
     @Override
@@ -87,7 +93,7 @@ public class ChatAdapter extends BaseAdapter {
         vh.contentLeft.removeAllViews();
         vh.contentRight.removeAllViews();
 
-        BaseMessage model = getItem(position);
+        final BaseMessage model = getItem(position);
 
         long prevTime = position > 0 ? getItem(position - 1).getChatDateTime() : -1L;
 
@@ -120,8 +126,17 @@ public class ChatAdapter extends BaseAdapter {
                 break;
         }
 
-        content.setBackgroundResource(model.needBackground() ? R.drawable.bg_content_normal : android.R.color.transparent);
+        // content.setBackgroundResource(model.needBackground() ? R.drawable.bg_content_selector : android.R.color.transparent);
+        content.setClickable(true);
         content.addView(model.getChatContentView(parent.getContext()));
+        content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnMessageClickListener != null) {
+                    mOnMessageClickListener.onClick(model.getId());
+                }
+            }
+        });
         if (model.enableAvatar()) {
             avatar.setVisibility(View.VISIBLE);
             if (mImageLoader != null) {

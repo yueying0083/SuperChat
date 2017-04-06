@@ -2,6 +2,10 @@ package cn.yueying0083.superchat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -12,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.yueying0083.superchat.model.BaseMessage;
 import cn.yueying0083.superchat.model.LinkMessage;
 import cn.yueying0083.superchat.model.TextMessage.*;
@@ -24,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.clv)
     ChatListView chatListView;
+
+    @BindView(R.id.et_input)
+    EditText editText;
 
     private ImageDisplay mImageDisplay;
     private boolean prevLoaded = false;
@@ -64,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         chatListView.setImageLoader(mImageDisplay);
         chatListView.setTimelineFormatter(new MyTimelineFormatter());
         chatListView.setPrevMessageLoader(mPrevMessageLoader);
+        chatListView.setOnMessageClickListener(new ChatListView.OnMessageClickListener() {
+            @Override
+            public void onClick(int id) {
+                Toast.makeText(MainActivity.this, "you click on " + id, Toast.LENGTH_SHORT).show();
+            }
+        });
         chatListView.updateList(messageList);
     }
 
@@ -96,4 +110,13 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     };
+
+    @OnClick(R.id.btn_send)
+    synchronized void sendMessage() {
+        String msg = editText.getText().toString();
+        if (!TextUtils.isEmpty(msg)) {
+            chatListView.newMessage(new RightTextMessage(editText.getText().toString(), System.currentTimeMillis(), "file:///android_asset/right.png"));
+            editText.setText(null);
+        }
+    }
 }
